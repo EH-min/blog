@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Save, X, Upload, Loader2, Eye, Edit, Bold, Italic, Link as LinkIcon, Image as ImageIcon } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
@@ -63,7 +63,7 @@ const generateSlug = (title: string): string => {
     .replace(/^-|-$/g, ''); // 앞뒤 하이픈 제거
 };
 
-export default function WritePage() {
+function WritePageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const editSlug = searchParams.get('slug');
@@ -622,5 +622,19 @@ function ImageGalleryModal({ onClose, onSelect }: { onClose: () => void; onSelec
         </div>
       </div>
     </div>
+  );
+}
+
+export default function WritePage() {
+  return (
+    <Suspense fallback={
+      <div className="max-w-3xl mx-auto">
+        <div className="flex items-center justify-center min-h-[400px]">
+          <Loader2 size={48} className="animate-spin text-blue-600 dark:text-blue-400" />
+        </div>
+      </div>
+    }>
+      <WritePageContent />
+    </Suspense>
   );
 }
