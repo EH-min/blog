@@ -3,7 +3,7 @@
 import React, { ReactNode, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { Moon, Sun, Search, PenTool, Github, LogOut } from 'lucide-react';
+import { Moon, Sun, Search, PenTool, Github, LogOut, Tag, FolderOpen } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import { supabase } from '@/lib/supabase';
 
@@ -17,11 +17,33 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
   const { theme, setTheme, resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
 
   // Avoid hydration mismatch
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  // Handle Scroll for Header Visibility
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      
+      // Always show header at the top or if scrolling up
+      if (currentScrollY < 10 || currentScrollY < lastScrollY) {
+        setIsVisible(true);
+      } else if (currentScrollY > lastScrollY && currentScrollY > 10) {
+        // Hide header when scrolling down and not at the top
+        setIsVisible(false);
+      }
+
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [lastScrollY]);
 
   // Check authentication status
   useEffect(() => {
@@ -55,7 +77,11 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
     <div className="min-h-screen flex flex-col">
       {/* Header */}
-      <header className="sticky top-0 z-50 w-full backdrop-blur-md bg-cream/80 dark:bg-dark/80 border-b border-gray-200 dark:border-gray-800 transition-colors duration-300">
+      <header 
+        className={`sticky top-0 z-50 w-full backdrop-blur-md bg-cream/80 dark:bg-dark/80 border-b border-gray-200 dark:border-gray-800 transition-transform duration-300 ${
+          isVisible ? 'translate-y-0' : '-translate-y-full'
+        }`}
+      >
         <div className="max-w-4xl mx-auto px-4 h-16 flex items-center justify-between">
           
           {/* Logo */}
@@ -68,25 +94,40 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
           {/* Right Actions */}
           <div className="flex items-center gap-4">
              {/* Navigation Links (Hidden on small mobile) */}
-            <nav className="hidden sm:flex items-center gap-4 text-sm font-medium text-gray-600 dark:text-gray-400">
+            <nav className="hidden sm:flex items-center gap-2">
               <Link 
                 href="/tags" 
-                className={`hover:text-black dark:hover:text-white transition-colors ${pathname.startsWith('/tags') ? 'text-black dark:text-white' : ''}`}
+                className={`p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors ${
+                  pathname.startsWith('/tags') 
+                    ? 'text-black dark:text-white bg-gray-100 dark:bg-gray-800' 
+                    : 'text-gray-500 dark:text-gray-400'
+                }`}
+                aria-label="Tags"
               >
-                Tags
+                <Tag size={20} />
               </Link>
               <Link 
                 href="/series" 
-                className={`hover:text-black dark:hover:text-white transition-colors ${pathname.startsWith('/series') ? 'text-black dark:text-white' : ''}`}
+                className={`p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors ${
+                  pathname.startsWith('/series') 
+                    ? 'text-black dark:text-white bg-gray-100 dark:bg-gray-800' 
+                    : 'text-gray-500 dark:text-gray-400'
+                }`}
+                aria-label="Series"
               >
-                Series
+                <FolderOpen size={20} />
               </Link>
               {isLoggedIn && (
                 <Link 
                   href="/write" 
-                  className={`hover:text-black dark:hover:text-white transition-colors flex items-center gap-1 ${pathname === '/write' ? 'text-black dark:text-white' : ''}`}
+                  className={`p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors ${
+                    pathname === '/write' 
+                      ? 'text-black dark:text-white bg-gray-100 dark:bg-gray-800' 
+                      : 'text-gray-500 dark:text-gray-400'
+                  }`}
+                  aria-label="Write"
                 >
-                  <PenTool size={14} /> Write
+                  <PenTool size={20} />
                 </Link>
               )}
             </nav>
@@ -95,7 +136,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
             {isLoggedIn && (
               <button
                 onClick={handleLogout}
-                className="hidden sm:flex items-center gap-1 px-3 py-1.5 rounded-lg text-sm font-medium
+                className="hidden sm:flex items-center gap-1 px-3 py-1.5 rounded-full text-sm font-medium
                   text-gray-600 dark:text-gray-400 
                   hover:text-red-600 dark:hover:text-red-400
                   hover:bg-red-50 dark:hover:bg-red-950/30
@@ -109,10 +150,10 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
 
             <Link 
               href="/search"
-              className={`p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors ${
+              className={`p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors ${
                 pathname.startsWith('/search') 
                   ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/30' 
-                  : 'text-gray-600 dark:text-gray-400'
+                  : 'text-gray-500 dark:text-gray-400'
               }`}
               aria-label="Search"
             >
@@ -121,7 +162,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
             
             <button 
               onClick={toggleDarkMode}
-              className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors text-gray-600 dark:text-gray-400"
+              className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors text-gray-500 dark:text-gray-400"
               aria-label="Toggle Dark Mode"
             >
               {mounted ? (

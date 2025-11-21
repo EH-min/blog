@@ -51,7 +51,7 @@ export default async function TagPostsPage({ params }: PageProps) {
       </header>
 
       {/* Posts Grid */}
-      <div className="grid gap-6 md:grid-cols-2">
+      <div className="grid gap-6 grid-cols-1">
         {posts.map((post) => (
           <PostCard key={post.id} post={post} />
         ))}

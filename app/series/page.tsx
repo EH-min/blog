@@ -26,29 +26,27 @@ export default async function SeriesPage() {
 
       {/* Series Grid */}
       {series.length > 0 ? (
-        <div className="grid gap-6 md:grid-cols-2">
+        <div className="grid gap-4 md:grid-cols-2">
           {series.map(({ name, count }) => (
             <Link
               key={name}
               href={`/series/${encodeURIComponent(name)}`}
-              className="group block p-6 rounded-lg border-2 border-gray-200 dark:border-gray-800 
-                hover:border-blue-500 dark:hover:border-blue-500 
-                hover:shadow-lg transition-all duration-200 hover:scale-105"
+              className="group block p-6 rounded-2xl bg-gray-50 dark:bg-gray-900 
+                hover:bg-gray-100 dark:hover:bg-gray-800
+                transition-all duration-200"
             >
-              <div className="flex items-start gap-4">
-                <div className="p-3 rounded-lg bg-blue-100 dark:bg-blue-900/30 group-hover:bg-blue-500 transition-colors">
-                  <FolderOpen size={24} className="text-blue-600 dark:text-blue-400 group-hover:text-white" />
+              <div className="flex items-center justify-between mb-4">
+                <div className="p-2 rounded-lg bg-white dark:bg-gray-800 shadow-sm text-blue-600 dark:text-blue-400">
+                  <FolderOpen size={20} />
                 </div>
-                <div className="flex-1 min-w-0">
-                  <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors line-clamp-2">
-                    {name}
-                  </h2>
-                  <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
-                    <FileText size={14} />
-                    <span>{count}개의 글</span>
-                  </div>
-                </div>
+                <span className="text-sm font-medium text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 px-2 py-1 rounded-md shadow-sm">
+                  {count} posts
+                </span>
               </div>
+              
+              <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                {name}
+              </h2>
             </Link>
           ))}
         </div>

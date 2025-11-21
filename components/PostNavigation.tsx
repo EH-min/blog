@@ -23,22 +23,23 @@ export function PostNavigation({ prev, next }: PostNavigationProps) {
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.3 }}
+          className="h-full"
         >
           <Link
             href={`/post/${prev.slug}`}
-            className="group block p-4 rounded-lg border border-gray-200 dark:border-gray-800 hover:border-blue-500 dark:hover:border-blue-500 transition-all duration-200 hover:shadow-md"
+            className="group flex flex-col justify-center h-full p-6 rounded-2xl bg-gray-50 dark:bg-gray-900 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
           >
-            <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 mb-2">
+            <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 mb-3">
               <ChevronLeft size={16} />
-              <span>이전 글</span>
+              <span>Previous Post</span>
             </div>
-            <h3 className="text-base font-medium text-gray-900 dark:text-gray-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors line-clamp-2">
+            <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors line-clamp-2">
               {prev.title}
             </h3>
           </Link>
         </motion.div>
       ) : (
-        <div></div>
+        <div className="hidden md:block"></div>
       )}
 
       {/* 다음 글 */}
@@ -47,16 +48,17 @@ export function PostNavigation({ prev, next }: PostNavigationProps) {
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.3 }}
+          className="h-full"
         >
           <Link
             href={`/post/${next.slug}`}
-            className="group block p-4 rounded-lg border border-gray-200 dark:border-gray-800 hover:border-blue-500 dark:hover:border-blue-500 transition-all duration-200 hover:shadow-md text-right"
+            className="group flex flex-col justify-center items-end text-right h-full p-6 rounded-2xl bg-gray-50 dark:bg-gray-900 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
           >
-            <div className="flex items-center justify-end gap-2 text-sm text-gray-500 dark:text-gray-400 mb-2">
-              <span>다음 글</span>
+            <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 mb-3">
+              <span>Next Post</span>
               <ChevronRight size={16} />
             </div>
-            <h3 className="text-base font-medium text-gray-900 dark:text-gray-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors line-clamp-2">
+            <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors line-clamp-2">
               {next.title}
             </h3>
           </Link>

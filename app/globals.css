@@ -49,15 +49,13 @@ body {
 }
 
 /* 인라인 코드 */
-.prose :not(pre) > code {
+.prose :not(pre)>code {
   @apply font-mono text-sm;
 }
 
 /* 체크박스 스타일 (GFM Task Lists) */
 .prose input[type="checkbox"] {
-  @apply w-4 h-4 rounded border-gray-300 dark:border-gray-600 
-         text-blue-600 focus:ring-blue-500 focus:ring-2 
-         dark:bg-gray-800 dark:checked:bg-blue-600;
+  @apply w-4 h-4 rounded border-gray-300 dark:border-gray-600 text-blue-600 focus:ring-blue-500 focus:ring-2 dark:bg-gray-800 dark:checked:bg-blue-600;
 }
 
 .prose ul.contains-task-list {
@@ -88,7 +86,7 @@ body {
 }
 
 /* 이미지 캡션 스타일 */
-.prose img + em {
+.prose img+em {
   @apply block text-center text-sm text-gray-500 dark:text-gray-400 mt-2;
 }
 
@@ -112,4 +110,21 @@ body {
 
 .prose pre::-webkit-scrollbar-thumb:hover {
   @apply bg-gray-500;
+}
+
+/* Animations */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.5s ease-out forwards;
 }

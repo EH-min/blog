@@ -13,6 +13,7 @@ import { PostNavigation } from '@/components/PostNavigation';
 import { Giscus } from '@/components/Giscus';
 import { PostActions } from '@/components/PostActions';
 import { PostStats } from '@/components/PostStats';
+import { CodeBlock } from '@/components/CodeBlock';
 
 // 동적 렌더링 설정
 export const dynamic = 'force-dynamic';
@@ -107,8 +108,57 @@ export default async function PostDetailPage({ params, searchParams }: PageProps
         </Link>
       </div>
 
+      {/* Header Section (Moved out of grid) */}
+      <div className="max-w-7xl mx-auto mb-10">
+        {/* Draft 상태 표시 */}
+        {!post.isPublished && (
+          <div className="mb-6 p-4 rounded-lg bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800">
+            <p className="text-yellow-800 dark:text-yellow-200 font-medium text-sm flex items-center gap-2">
+              📝 이 글은 임시 저장 상태입니다. 관리자만 볼 수 있습니다.
+            </p>
+          </div>
+        )}
+
+        {/* Admin Actions (수정/삭제) */}
+        <PostActions slug={post.slug} />
+
+        {/* Header Info */}
+        <header className="mb-10">
+          {post.seriesName && (
+            <div className="flex items-center gap-2 text-base font-medium text-blue-600 dark:text-blue-400 mb-4">
+              <FolderOpen size={18} />
+              <span>{post.seriesName}</span>
+            </div>
+          )}
+          
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-gray-100 mb-8 leading-tight">
+            {post.title}
+          </h1>
+
+          <div className="flex flex-wrap items-center gap-6 text-gray-500 dark:text-gray-400 text-base">
+            <div className="flex items-center gap-2">
+              <Calendar size={18} />
+              <span>{date}</span>
+            </div>
+            <PostStats slug={post.slug} initialViews={post.views} initialLikes={post.likes} />
+          </div>
+
+          <div className="flex flex-wrap gap-2 mt-8">
+            {post.tags.map(tag => (
+              <span key={tag} className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 text-sm font-medium">
+                <Tag size={14} />
+                {tag}
+              </span>
+            ))}
+          </div>
+        </header>
+
+        {/* Divider */}
+        <hr className="border-gray-200 dark:border-gray-800" />
+      </div>
+
       {/* 반응형 그리드 레이아웃 */}
-      <div className="max-w-7xl mx-auto lg:grid lg:grid-cols-[1fr_280px] lg:gap-8 xl:gap-12">
+      <div className="max-w-7xl mx-auto lg:grid lg:grid-cols-[1fr_250px] lg:gap-16 xl:gap-24">
         {/* 메인 콘텐츠 */}
         <article className="min-w-0">
           {/* Mobile TOC (접이식) */}
@@ -120,52 +170,6 @@ export default async function PostDetailPage({ params, searchParams }: PageProps
               <TableOfContents content={post.content} />
             </div>
           </details>
-
-          {/* Draft 상태 표시 */}
-          {!post.isPublished && (
-            <div className="mb-6 p-4 rounded-lg bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800">
-              <p className="text-yellow-800 dark:text-yellow-200 font-medium text-sm flex items-center gap-2">
-                📝 이 글은 임시 저장 상태입니다. 관리자만 볼 수 있습니다.
-              </p>
-            </div>
-          )}
-
-          {/* Admin Actions (수정/삭제) */}
-          <PostActions slug={post.slug} />
-
-          {/* Header Info */}
-          <header className="mb-10">
-            {post.seriesName && (
-              <div className="flex items-center gap-1 text-sm font-medium text-blue-600 dark:text-blue-400 mb-4">
-                <FolderOpen size={14} />
-                <span>{post.seriesName}</span>
-              </div>
-            )}
-            
-            <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-gray-100 mb-6 leading-tight">
-              {post.title}
-            </h1>
-
-            <div className="flex flex-wrap items-center gap-6 text-gray-500 dark:text-gray-400 text-sm">
-              <div className="flex items-center gap-2">
-                <Calendar size={16} />
-                <span>{date}</span>
-              </div>
-              <PostStats slug={post.slug} initialViews={post.views} initialLikes={post.likes} />
-            </div>
-
-            <div className="flex flex-wrap gap-2 mt-6">
-              {post.tags.map(tag => (
-                <span key={tag} className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 text-xs font-medium">
-                  <Tag size={10} />
-                  {tag}
-                </span>
-              ))}
-            </div>
-          </header>
-
-          {/* Divider */}
-          <hr className="border-gray-200 dark:border-gray-800 mb-10" />
 
           {/* Content */}
           <div className="prose prose-lg dark:prose-invert max-w-none 
@@ -188,6 +192,13 @@ export default async function PostDetailPage({ params, searchParams }: PageProps
             <ReactMarkdown
               remarkPlugins={[remarkGfm]}
               rehypePlugins={[rehypeHighlight, rehypeSlug]}
+              components={{
+                pre: ({ children, ...props }) => (
+                  <CodeBlock {...props}>
+                    {children}
+                  </CodeBlock>
+                ),
+              }}
             >
               {post.content}
             </ReactMarkdown>
