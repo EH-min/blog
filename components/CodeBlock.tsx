@@ -17,8 +17,11 @@ export function CodeBlock({ className, children }: CodeBlockProps) {
     React.Children.forEach(children, (child) => {
       if (typeof child === 'string') {
         text += child;
-      } else if (React.isValidElement(child) && child.props.children) {
-        text += getTextFromChildren(child.props.children);
+      } else if (React.isValidElement(child)) {
+        const props = child.props as { children?: React.ReactNode };
+        if (props.children) {
+          text += getTextFromChildren(props.children);
+        }
       }
     });
     return text;
