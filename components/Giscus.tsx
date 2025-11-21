@@ -5,12 +5,12 @@ import { useState } from 'react';
 import GiscusComponent from '@giscus/react';
 import type { BooleanString } from '@giscus/react';
 
-// Giscus 설정 (환경 변수로 관리 가능)
+// Giscus 설정
 const GISCUS_CONFIG = {
-  repo: process.env.NEXT_PUBLIC_GISCUS_REPO || 'EH-min/blog',
-  repoId: process.env.NEXT_PUBLIC_GISCUS_REPO_ID || 'R_kgDOQaeesw',
-  category: process.env.NEXT_PUBLIC_GISCUS_CATEGORY || 'General',
-  categoryId: process.env.NEXT_PUBLIC_GISCUS_CATEGORY_ID || '',
+  repo: 'EH-min/blog',
+  repoId: 'R_kgDOQaeesw',
+  category: 'General',
+  categoryId: 'DIC_kwDOQaees84CyDsb',
   mapping: 'pathname' as const,
   strict: '0' as BooleanString,
   reactionsEnabled: '1' as BooleanString,
