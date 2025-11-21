@@ -5,8 +5,8 @@ import { UserProfile } from '@/types';
 // Hardcoded for demo based on screenshot
 const PROFILE_DATA: UserProfile = {
   name: "@taemni",
-  description: "안녕하세요, 초보 개발자 탬니입니다.",
-  avatarUrl: "https://picsum.photos/200/200?grayscale",
+  description: "안녕하세요, 차근차근 성장 중인 조태민입니다.",
+  avatarUrl: "/profileImage.png",
   socials: {
     github: "https://github.com/EH-min",
     instagram: "https://www.instagram.com/tm_01j",
