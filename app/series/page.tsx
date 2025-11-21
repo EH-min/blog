@@ -2,6 +2,10 @@ import Link from 'next/link';
 import { FolderOpen, FileText } from 'lucide-react';
 import { getAllSeries } from '@/services/postService';
 
+// 동적 렌더링 설정
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export default async function SeriesPage() {
   const series = await getAllSeries();
 

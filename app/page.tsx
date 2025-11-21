@@ -2,6 +2,10 @@ import { ProfileCard } from '@/components/ProfileCard';
 import { PostCard } from '@/components/PostCard';
 import { getPosts } from '@/services/postService';
 
+// 동적 렌더링 설정
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export default async function HomePage() {
   const posts = await getPosts();
 

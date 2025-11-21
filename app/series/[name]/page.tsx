@@ -4,6 +4,10 @@ import { ArrowLeft, FolderOpen } from 'lucide-react';
 import { getPostsBySeries } from '@/services/postService';
 import { PostCard } from '@/components/PostCard';
 
+// 동적 렌더링 설정
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 interface PageProps {
   params: Promise<{ name: string }>;
 }

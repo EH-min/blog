@@ -2,6 +2,10 @@ import Link from 'next/link';
 import { Tag } from 'lucide-react';
 import { getAllTags } from '@/services/postService';
 
+// 동적 렌더링 설정
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export default async function TagsPage() {
   const tags = await getAllTags();
 

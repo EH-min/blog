@@ -14,6 +14,10 @@ import { Giscus } from '@/components/Giscus';
 import { PostActions } from '@/components/PostActions';
 import { PostStats } from '@/components/PostStats';
 
+// 동적 렌더링 설정
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 interface PageProps {
   params: Promise<{ slug: string }>;
   searchParams: Promise<{ preview?: string }>;
