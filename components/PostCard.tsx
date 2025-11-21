@@ -18,13 +18,20 @@ export const PostCard: React.FC<PostCardProps> = ({ post }) => {
     <Link href={`/post/${post.slug}`} className="block group">
       <article className="py-8 border-b border-gray-100 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors rounded-lg px-4 -mx-4">
         
-        {/* Series Indicator */}
-        {post.seriesName && (
-          <div className="flex items-center gap-1 text-xs font-medium text-blue-600 dark:text-blue-400 mb-2">
-            <FolderOpen size={12} />
-            <span>{post.seriesName}</span>
-          </div>
-        )}
+        {/* Series Indicator & Draft Badge */}
+        <div className="flex items-center gap-2 mb-2">
+          {post.seriesName && (
+            <div className="flex items-center gap-1 text-xs font-medium text-blue-600 dark:text-blue-400">
+              <FolderOpen size={12} />
+              <span>{post.seriesName}</span>
+            </div>
+          )}
+          {!post.isPublished && (
+            <span className="px-2 py-0.5 text-xs font-medium rounded bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-200">
+              📝 Draft
+            </span>
+          )}
+        </div>
 
         {/* Title */}
         <h3 className="text-2xl md:text-3xl font-bold mb-3 text-gray-900 dark:text-gray-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">

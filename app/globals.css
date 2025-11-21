@@ -1,4 +1,6 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
+@import "highlight.js/styles/github-dark.css";
 
 @variant dark (&:where(.dark, .dark *));
 
@@ -30,4 +32,84 @@
 
 body {
   @apply bg-cream text-gray-900 dark:bg-dark dark:text-gray-100 transition-colors duration-300;
+}
+
+/* ============================================
+   Markdown Content Styling
+   ============================================ */
+
+/* 코드 블록 추가 스타일링 */
+.prose pre {
+  @apply overflow-x-auto;
+}
+
+.prose pre code {
+  @apply bg-transparent text-sm leading-relaxed;
+  font-family: 'Fira Code', 'Consolas', 'Monaco', monospace;
+}
+
+/* 인라인 코드 */
+.prose :not(pre) > code {
+  @apply font-mono text-sm;
+}
+
+/* 체크박스 스타일 (GFM Task Lists) */
+.prose input[type="checkbox"] {
+  @apply w-4 h-4 rounded border-gray-300 dark:border-gray-600 
+         text-blue-600 focus:ring-blue-500 focus:ring-2 
+         dark:bg-gray-800 dark:checked:bg-blue-600;
+}
+
+.prose ul.contains-task-list {
+  @apply list-none pl-0;
+}
+
+.prose ul.contains-task-list li {
+  @apply flex items-start gap-2;
+}
+
+.prose ul.contains-task-list li input[type="checkbox"] {
+  @apply mt-1 shrink-0;
+}
+
+/* 표 반응형 스크롤 */
+.prose table {
+  @apply block overflow-x-auto;
+}
+
+/* 코드 블록 라인 넘버링과 복사 버튼을 위한 준비 */
+.prose pre {
+  @apply relative;
+}
+
+/* 링크 호버 효과 강화 */
+.prose a {
+  @apply transition-colors duration-200;
+}
+
+/* 이미지 캡션 스타일 */
+.prose img + em {
+  @apply block text-center text-sm text-gray-500 dark:text-gray-400 mt-2;
+}
+
+/* 각주 스타일 */
+.prose .footnotes {
+  @apply mt-12 pt-8 border-t border-gray-200 dark:border-gray-800 text-sm;
+}
+
+/* 스크롤 가능한 코드 블록에 그라데이션 힌트 */
+.prose pre::-webkit-scrollbar {
+  @apply h-2;
+}
+
+.prose pre::-webkit-scrollbar-track {
+  @apply bg-gray-800 rounded;
+}
+
+.prose pre::-webkit-scrollbar-thumb {
+  @apply bg-gray-600 rounded;
+}
+
+.prose pre::-webkit-scrollbar-thumb:hover {
+  @apply bg-gray-500;
 }

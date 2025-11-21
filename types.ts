@@ -6,6 +6,9 @@ export interface Post {
   seriesName: string | null;
   tags: string[];
   createdAt: string;
+  isPublished: boolean;
+  views: number;
+  likes: number;
 }
 
 export interface PostCreateRequest {
@@ -15,6 +18,15 @@ export interface PostCreateRequest {
   seriesName?: string;
   tags: string[];
   status: 'PUBLISHED' | 'DRAFT';
+}
+
+export interface PostUpdateRequest {
+  title?: string;
+  content?: string;
+  slug?: string;
+  seriesName?: string;
+  tags?: string[];
+  status?: 'PUBLISHED' | 'DRAFT';
 }
 
 export interface UserProfile {
