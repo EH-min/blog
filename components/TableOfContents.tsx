@@ -17,6 +17,28 @@ interface TableOfContentsProps {
 export function TableOfContents({ content }: TableOfContentsProps) {
   const [activeId, setActiveId] = useState<string>('');
 
+  // 마크다운 문법 제거 함수
+  const cleanMarkdownText = (text: string): string => {
+    return text
+      // 볼드 제거: **텍스트** 또는 __텍스트__
+      .replace(/\*\*(.+?)\*\*/g, '$1')
+      .replace(/__(.+?)__/g, '$1')
+      // 이탤릭 제거: *텍스트* 또는 _텍스트_
+      .replace(/\*(.+?)\*/g, '$1')
+      .replace(/_(.+?)_/g, '$1')
+      // 인라인 코드 제거: `코드`
+      .replace(/`(.+?)`/g, '$1')
+      // 링크 제거: [텍스트](url) -> 텍스트
+      .replace(/\[(.+?)\]\(.+?\)/g, '$1')
+      // 이미지 제거: ![alt](url)
+      .replace(/!\[.*?\]\(.+?\)/g, '')
+      // 취소선 제거: ~~텍스트~~
+      .replace(/~~(.+?)~~/g, '$1')
+      // 이모지와 특수문자 앞의 백슬래시 제거
+      .replace(/\\([*_`~\[\]()])/g, '$1')
+      .trim();
+  };
+
   // 마크다운에서 헤더 추출 (useMemo 사용)
   const headings = useMemo(() => {
     const headingRegex = /^(#{1,3})\s+(.+)$/gm;
@@ -25,9 +47,12 @@ export function TableOfContents({ content }: TableOfContentsProps) {
 
     while ((match = headingRegex.exec(content)) !== null) {
       const level = match[1].length;
-      const text = match[2].trim();
+      const rawText = match[2].trim();
+      // 마크다운 문법 제거
+      const text = cleanMarkdownText(rawText);
+      
       // rehype-slug가 생성하는 id 형식과 동일하게 변환
-      const id = text
+      const id = rawText
         .toLowerCase()
         .replace(/[^a-z0-9가-힣\s-]/g, '')
         .replace(/\s+/g, '-');
